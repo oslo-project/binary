@@ -20,6 +20,10 @@
 		"crypto",
 		"binary"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/oslo-project/binary"
+	},
 	"author": "pilcrowOnPaper",
 	"license": "MIT",
 	"devDependencies": {
