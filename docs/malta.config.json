@@ -1,6 +1,6 @@
 {
 	"name": "@oslojs/binary",
-	"description": "Utilities for working with binary data.",
+	"description": "Basic primitives for working with binary data.",
 	"domain": "https://binary.oslojs.dev",
 	"twitter": "@pilcrowonpaper",
 	"sidebar": [
