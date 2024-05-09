@@ -1,6 +1,8 @@
-# @oslojs/binary
+---
+title: "@oslojs/binary documentation"
+---
 
-**Documentation: https://binary.oslojs.dev**
+# @oslojs/binary
 
 A JavaScript library for working with binary data by [Oslo](https://oslojs.dev).
 

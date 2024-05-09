@@ -1,0 +1,25 @@
+{
+	"name": "@oslojs/binary",
+	"description": "Utilities for working with binary data.",
+	"domain": "https://binary.oslojs.dev",
+	"twitter": "@pilcrowonpaper",
+	"sidebar": [
+		{
+			"title": "Examples",
+			"pages": [["Convert between binary and integers", "/examples/integers"]]
+		},
+		{
+			"title": "API reference",
+			"pages": [["@oslojs/binary", "/reference/main"]]
+		},
+		{
+			"title": "Links",
+			"pages": [
+				["GitHub", "https://github.com/oslo-project/binary"],
+				["Oslo", "https://oslojs.dev"],
+				["Twitter", "https://twitter.com/pilcrowonpaper"],
+				["Donate", "https://github.com/sponsors/pilcrowOnPaper"]
+			]
+		}
+	]
+}

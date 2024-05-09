@@ -1,27 +1,27 @@
-export function xor(target: Uint8Array, xorWith: Uint8Array): void {
-	if (target.byteLength !== xorWith.byteLength) {
+export function xor(target: Uint8Array, mask: Uint8Array): void {
+	if (target.byteLength !== mask.byteLength) {
 		throw new TypeError("Byte length do not match");
 	}
 	for (let i = 0; i < target.byteLength; i++) {
-		target[i] ^= xorWith[i];
+		target[i] ^= mask[i];
 	}
 }
 
-export function or(target: Uint8Array, xorWith: Uint8Array): void {
-	if (target.byteLength !== xorWith.byteLength) {
+export function or(target: Uint8Array, mask: Uint8Array): void {
+	if (target.byteLength !== mask.byteLength) {
 		throw new TypeError("Byte length do not match");
 	}
 	for (let i = 0; i < target.byteLength; i++) {
-		target[i] |= xorWith[i];
+		target[i] |= mask[i];
 	}
 }
 
-export function and(target: Uint8Array, xorWith: Uint8Array): void {
-	if (target.byteLength !== xorWith.byteLength) {
+export function and(target: Uint8Array, mask: Uint8Array): void {
+	if (target.byteLength !== mask.byteLength) {
 		throw new TypeError("Byte length do not match");
 	}
 	for (let i = 0; i < target.byteLength; i++) {
-		target[i] &= xorWith[i];
+		target[i] &= mask[i];
 	}
 }
 
