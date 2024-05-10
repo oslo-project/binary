@@ -3,6 +3,7 @@
 	"description": "Basic primitives for working with binary data.",
 	"domain": "https://binary.oslojs.dev",
 	"twitter": "@pilcrowonpaper",
+	"asset_hashing": true,
 	"sidebar": [
 		{
 			"title": "Examples",
