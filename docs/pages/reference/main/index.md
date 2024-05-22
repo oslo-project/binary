@@ -1,10 +1,12 @@
 ---
-title: "oslo/binary"
+title: "@oslojs/binary"
 ---
 
-# `oslo/binary`
+# @oslojs/binary
 
-Provides utilities for working with binaries.
+## Classes
+
+- [`DynamicBuffer`](/reference/main/DynamicBuffer)
 
 ## Functions
 
@@ -20,7 +22,7 @@ Provides utilities for working with binaries.
 - [`rotr64()`](/reference/main/rotr64)
 - [`xor()`](/reference/main/xor)
 
-## Variables
+## Variables˝
 
 - [`bigEndian`](/reference/main/bigEndian)
 - [`littleEndian`](/reference/main/littleEndian)
