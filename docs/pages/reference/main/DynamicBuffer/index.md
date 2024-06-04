@@ -22,6 +22,7 @@ function constructor(capacity: number): this;
 - [`DynamicBuffer.clear()`](/reference/main/DynamicBuffer/clear)
 - [`DynamicBuffer.readInto()`](/reference/main/DynamicBuffer/readInto)
 - [`DynamicBuffer.write()`](/reference/main/DynamicBuffer/write)
+- [`DynamicBuffer.writeByte()`](/reference/main/DynamicBuffer/writeByte)
 
 ## Properties
 

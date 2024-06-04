@@ -1,4 +1,4 @@
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
 import { compareBytes, concatenateBytes, DynamicBuffer } from "./bytes.js";
 
@@ -18,17 +18,27 @@ test("concatenateBytes()", () => {
 	expect(concatenateBytes(a, b)).toStrictEqual(new Uint8Array([0, 1, 2, 3, 4]));
 });
 
-test("DynamicBuffer", () => {
-	const buffer = new DynamicBuffer(0);
-	buffer.write(new Uint8Array([0x01]));
-	expect(buffer.bytes()).toStrictEqual(new Uint8Array([0x01]));
-	buffer.write(new Uint8Array(100));
-	expect(buffer.length).toStrictEqual(101);
-	expect(buffer.capacity).toStrictEqual(128);
-	expect(buffer.bytes()).toStrictEqual(
-		concatenateBytes(new Uint8Array([0x01]), new Uint8Array(100))
-	);
-	buffer.write(new Uint8Array(27));
-	expect(buffer.length).toStrictEqual(128);
-	expect(buffer.capacity).toStrictEqual(128);
+describe("DynamicBuffer", () => {
+	test("DynamicBuffer.write()", () => {
+		const buffer = new DynamicBuffer(0);
+		buffer.write(new Uint8Array([0x01]));
+		expect(buffer.bytes()).toStrictEqual(new Uint8Array([0x01]));
+		buffer.write(new Uint8Array(100));
+		expect(buffer.capacity).toStrictEqual(128);
+		expect(buffer.bytes()).toStrictEqual(new Uint8Array([0x01, ...new Uint8Array(100)]));
+		buffer.write(new Uint8Array(27));
+		expect(buffer.length).toStrictEqual(128);
+		expect(buffer.capacity).toStrictEqual(128);
+	});
+
+	test("DynamicBuffer.writeByte()", () => {
+		const buffer = new DynamicBuffer(0);
+		buffer.writeByte(0x01);
+		expect(buffer.bytes()).toStrictEqual(new Uint8Array([0x01]));
+		buffer.writeByte(0x02);
+		buffer.writeByte(0x03);
+		buffer.writeByte(0x04);
+		expect(buffer.capacity).toBe(4);
+		expect(buffer.bytes()).toStrictEqual(new Uint8Array([0x01, 0x02, 0x03, 0x04]));
+	});
 });

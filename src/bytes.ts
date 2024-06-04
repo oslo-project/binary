@@ -32,13 +32,13 @@ export class DynamicBuffer {
 		this.capacity = capacity = capacity;
 	}
 
-	public write(data: Uint8Array): void {
-		if (this.length + data.byteLength <= this.capacity) {
-			this.value.set(data, this.length);
-			this.length += data.byteLength;
+	public write(bytes: Uint8Array): void {
+		if (this.length + bytes.byteLength <= this.capacity) {
+			this.value.set(bytes, this.length);
+			this.length += bytes.byteLength;
 			return;
 		}
-		while (this.length + data.byteLength > this.capacity) {
+		while (this.length + bytes.byteLength > this.capacity) {
 			if (this.capacity === 0) {
 				this.capacity = 1;
 			} else {
@@ -47,9 +47,27 @@ export class DynamicBuffer {
 		}
 		const newValue = new Uint8Array(this.capacity);
 		newValue.set(this.value.subarray(0, this.length));
-		newValue.set(data, this.length);
+		newValue.set(bytes, this.length);
 		this.value = newValue;
-		this.length += data.byteLength;
+		this.length += bytes.byteLength;
+	}
+
+	public writeByte(byte: number): void {
+		if (this.length + 1 <= this.capacity) {
+			this.value[this.length] = byte;
+			this.length += 1;
+			return;
+		}
+		if (this.capacity === 0) {
+			this.capacity = 1;
+		} else {
+			this.capacity = this.capacity * 2;
+		}
+		const newValue = new Uint8Array(this.capacity);
+		newValue.set(this.value.subarray(0, this.length));
+		newValue[this.length] = byte;
+		this.value = newValue;
+		this.length += 1;
 	}
 
 	public readInto(target: Uint8Array): void {
