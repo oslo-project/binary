@@ -11,6 +11,8 @@ title: "@oslojs/binary"
 ## Functions
 
 - [`and()`](/reference/main/and)
+- [`bigIntBytes()`](/reference/main/bigIntBytes)
+- [`bigIntFromBytes()`](/reference/main/bigIntFromBytes)
 - [`compareBytes()`](/reference/main/compareBytes)
 - [`concatenateBytes()`](/reference/main/concatenateBytes)
 - [`concatenateBytesInto()`](/reference/main/concatenateBytesInto)
