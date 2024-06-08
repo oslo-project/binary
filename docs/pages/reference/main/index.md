@@ -24,7 +24,7 @@ title: "@oslojs/binary"
 - [`rotr64()`](/reference/main/rotr64)
 - [`xor()`](/reference/main/xor)
 
-## Variables˝
+## Variables
 
 - [`bigEndian`](/reference/main/bigEndian)
 - [`littleEndian`](/reference/main/littleEndian)

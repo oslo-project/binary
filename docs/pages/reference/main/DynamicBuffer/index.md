@@ -4,7 +4,7 @@ title: "DynamicBuffer"
 
 # DynamicBuffer
 
-A dynamically-sized view of an `Uint8Array`. It automatically grows the array size (capacity) and allows˝ you to continuously write to an `Uint8Array`. The capacity grows by a factor of 2 (1 => 2 => 4 => 8 => 16...).
+A dynamically-sized view of an `Uint8Array`. It automatically grows the array size (capacity) and allows you to continuously write to an `Uint8Array`. The capacity grows by a factor of 2 (1 => 2 => 4 => 8 => 16...).
 
 ## Constructor
 
