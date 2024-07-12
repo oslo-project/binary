@@ -10,19 +10,14 @@ title: "@oslojs/binary"
 
 ## Functions
 
-- [`and()`](/reference/main/and)
 - [`bigIntBytes()`](/reference/main/bigIntBytes)
 - [`bigIntFromBytes()`](/reference/main/bigIntFromBytes)
 - [`compareBytes()`](/reference/main/compareBytes)
 - [`concatenateBytes()`](/reference/main/concatenateBytes)
-- [`concatenateBytesInto()`](/reference/main/concatenateBytesInto)
-- [`not()`](/reference/main/not)
-- [`or()`](/reference/main/or)
 - [`rotl32()`](/reference/main/rotl32)
 - [`rotr32()`](/reference/main/rotr32)
 - [`rotl64()`](/reference/main/rotl64)
 - [`rotr64()`](/reference/main/rotr64)
-- [`xor()`](/reference/main/xor)
 
 ## Variables
 

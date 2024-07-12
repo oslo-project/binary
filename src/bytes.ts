@@ -12,13 +12,9 @@ export function compareBytes(a: Uint8Array, b: Uint8Array): boolean {
 
 export function concatenateBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
 	const result = new Uint8Array(a.byteLength + b.byteLength);
-	concatenateBytesInto(result, a, b);
+	result.set(a);
+	result.set(b, a.byteLength);
 	return result;
-}
-
-export function concatenateBytesInto(target: Uint8Array, a: Uint8Array, b: Uint8Array): void {
-	target.set(new Uint8Array(a), 0);
-	target.set(new Uint8Array(b), a.byteLength);
 }
 
 export class DynamicBuffer {

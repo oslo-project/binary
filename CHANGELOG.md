@@ -1,5 +1,9 @@
 # @oslojs/binary
 
+## 0.3.0
+
+- [Breaking] Remove `concatenateBytesInto()`, `and()`, `or()`, `xor()`, and `not()`
+
 ## 0.2.3
 
 - Add `bigIntBytes()` and `bigIntFromBytes()`
