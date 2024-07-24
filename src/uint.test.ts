@@ -5,57 +5,76 @@ import { describe } from "vitest";
 describe("bigEndian", () => {
 	describe("bigEndian.uint8", () => {
 		test("returns correct value", () => {
-			expect(bigEndian.uint8(new Uint8Array([1]))).toBe(1);
+			expect(bigEndian.uint8(new Uint8Array([1]), 0)).toBe(1);
 		});
 		test("excessive bytes", () => {
-			expect(bigEndian.uint8(new Uint8Array([1, 2]))).toBe(2);
+			expect(bigEndian.uint8(new Uint8Array([1, 2]), 0)).toBe(1);
 		});
-		test("0 bytes", () => {
-			expect(() => bigEndian.uint8(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(bigEndian.uint8(new Uint8Array([1, 2]), 1)).toBe(2);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => bigEndian.uint8(new Uint8Array([]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => bigEndian.uint8(new Uint8Array([1]), 1)).toThrowError();
 		});
 	});
 	describe("bigEndian.uint16", () => {
 		test("returns correct value", () => {
-			expect(bigEndian.uint16(new Uint8Array([1, 2]))).toBe(258);
-		});
-		test("insufficient bytes", () => {
-			expect(bigEndian.uint16(new Uint8Array([1]))).toBe(1);
+			expect(bigEndian.uint16(new Uint8Array([1, 2]), 0)).toBe(0x0102);
 		});
 		test("excessive bytes", () => {
-			expect(bigEndian.uint16(new Uint8Array([1, 2, 3]))).toBe(515);
+			expect(bigEndian.uint16(new Uint8Array([1, 2, 3]), 0)).toBe(0x0102);
 		});
-		test("0 bytes", () => {
-			expect(() => bigEndian.uint16(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(bigEndian.uint16(new Uint8Array([1, 2, 3]), 1)).toBe(0x0203);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => bigEndian.uint16(new Uint8Array([1]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => bigEndian.uint16(new Uint8Array([1, 2]), 1)).toThrowError();
 		});
 	});
 	describe("bigEndian.uint32", () => {
 		test("returns correct value", () => {
-			expect(bigEndian.uint32(new Uint8Array([1, 2, 3, 4]))).toBe(16909060);
-		});
-		test("insufficient bytes", () => {
-			expect(bigEndian.uint32(new Uint8Array([1]))).toBe(1);
+			expect(bigEndian.uint32(new Uint8Array([1, 2, 3, 4]), 0)).toBe(0x01020304);
 		});
 		test("excessive bytes", () => {
-			expect(bigEndian.uint32(new Uint8Array([1, 2, 3, 4, 5]))).toBe(33752069);
+			expect(bigEndian.uint32(new Uint8Array([1, 2, 3, 4, 5]), 0)).toBe(0x01020304);
 		});
-		test("0 bytes", () => {
-			expect(() => bigEndian.uint32(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(bigEndian.uint32(new Uint8Array([1, 2, 3, 4, 5]), 1)).toBe(0x02030405);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => bigEndian.uint32(new Uint8Array([1]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => bigEndian.uint32(new Uint8Array([1, 2, 3, 4]), 1)).toThrowError();
 		});
 	});
 	describe("bigEndian.uint64", () => {
 		test("returns correct value", () => {
-			expect(bigEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]))).toBe(72623859790382856n);
-		});
-		test("insufficient bytes", () => {
-			expect(bigEndian.uint64(new Uint8Array([1]))).toBe(1n);
-		});
-		test("excessive bytes", () => {
-			expect(bigEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]))).toBe(
-				144964032628459529n
+			expect(bigEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]), 0)).toBe(
+				0x0102030405060708n
 			);
 		});
-		test("0 bytes", () => {
-			expect(() => bigEndian.uint64(new Uint8Array([]))).toThrow();
+		test("excessive bytes", () => {
+			expect(bigEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), 0)).toBe(
+				0x0102030405060708n
+			);
+		});
+		test("offset", () => {
+			expect(bigEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), 1)).toBe(
+				0x0203040506070809n
+			);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => bigEndian.uint64(new Uint8Array([1]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => bigEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]), 1)).toThrowError();
 		});
 	});
 
@@ -164,59 +183,77 @@ describe("bigEndian", () => {
 describe("littleEndian", () => {
 	describe("littleEndian.uint8", () => {
 		test("returns correct value", () => {
-			expect(littleEndian.uint8(new Uint8Array([1]))).toBe(1);
+			expect(littleEndian.uint8(new Uint8Array([1]), 0)).toBe(1);
 		});
 		test("excessive bytes", () => {
-			expect(littleEndian.uint8(new Uint8Array([2, 1]))).toBe(2);
+			expect(littleEndian.uint8(new Uint8Array([1, 2]), 0)).toBe(1);
 		});
-		test("0 bytes", () => {
-			expect(() => littleEndian.uint8(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(littleEndian.uint8(new Uint8Array([1, 2]), 1)).toBe(2);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => littleEndian.uint8(new Uint8Array([]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => littleEndian.uint8(new Uint8Array([1]), 1)).toThrowError();
 		});
 	});
 	describe("littleEndian.uint16", () => {
 		test("returns correct value", () => {
-			expect(littleEndian.uint16(new Uint8Array([2, 1]))).toBe(258);
-		});
-		test("insufficient bytes", () => {
-			expect(littleEndian.uint16(new Uint8Array([1]))).toBe(1);
+			expect(littleEndian.uint16(new Uint8Array([1, 2]), 0)).toBe(0x0201);
 		});
 		test("excessive bytes", () => {
-			expect(littleEndian.uint16(new Uint8Array([3, 2, 1]))).toBe(515);
+			expect(littleEndian.uint16(new Uint8Array([1, 2, 3]), 0)).toBe(0x0201);
 		});
-		test("0 bytes", () => {
-			expect(() => littleEndian.uint16(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(littleEndian.uint16(new Uint8Array([1, 2, 3]), 1)).toBe(0x0302);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => littleEndian.uint16(new Uint8Array([1]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => littleEndian.uint16(new Uint8Array([1, 2]), 1)).toThrowError();
 		});
 	});
 	describe("littleEndian.uint32", () => {
 		test("returns correct value", () => {
-			expect(littleEndian.uint32(new Uint8Array([4, 3, 2, 1]))).toBe(16909060);
-		});
-		test("insufficient bytes", () => {
-			expect(littleEndian.uint32(new Uint8Array([1]))).toBe(1);
+			expect(littleEndian.uint32(new Uint8Array([1, 2, 3, 4]), 0)).toBe(0x04030201);
 		});
 		test("excessive bytes", () => {
-			expect(littleEndian.uint32(new Uint8Array([5, 4, 3, 2, 1]))).toBe(33752069);
+			expect(littleEndian.uint32(new Uint8Array([1, 2, 3, 4, 5]), 0)).toBe(0x04030201);
 		});
-		test("0 bytes", () => {
-			expect(() => littleEndian.uint32(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(littleEndian.uint32(new Uint8Array([1, 2, 3, 4, 5]), 1)).toBe(0x05040302);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => littleEndian.uint32(new Uint8Array([1]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => littleEndian.uint32(new Uint8Array([1, 2, 3, 4]), 1)).toThrowError();
 		});
 	});
+
 	describe("littleEndian.uint64", () => {
 		test("returns correct value", () => {
-			expect(littleEndian.uint64(new Uint8Array([8, 7, 6, 5, 4, 3, 2, 1]))).toBe(
-				72623859790382856n
+			expect(littleEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]), 0)).toBe(
+				0x0807060504030201n
 			);
-		});
-		test("insufficient bytes", () => {
-			expect(littleEndian.uint64(new Uint8Array([1]))).toBe(1n);
 		});
 		test("excessive bytes", () => {
-			expect(littleEndian.uint64(new Uint8Array([9, 8, 7, 6, 5, 4, 3, 2, 1]))).toBe(
-				144964032628459529n
+			expect(littleEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), 0)).toBe(
+				0x0807060504030201n
 			);
 		});
-		test("0 bytes", () => {
-			expect(() => littleEndian.uint64(new Uint8Array([]))).toThrow();
+		test("offset", () => {
+			expect(littleEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), 1)).toBe(
+				0x0908070605040302n
+			);
+		});
+		test("throws error on insufficient bytes", () => {
+			expect(() => littleEndian.uint64(new Uint8Array([1]), 0)).toThrowError();
+		});
+		test("throws error on insufficient bytes with offset", () => {
+			expect(() => littleEndian.uint64(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]), 1)).toThrowError();
 		});
 	});
 

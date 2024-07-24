@@ -1,69 +1,67 @@
 class BigEndian implements ByteOrder {
-	public uint8(data: Uint8Array): number {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint8(data: Uint8Array, offset: number): number {
+		if (data.byteLength < offset + 1) {
+			throw new TypeError("Insufficient bytes");
 		}
-		return data[data.length - 1];
+		return data[offset];
 	}
 
-	public uint16(data: Uint8Array): number {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint16(data: Uint8Array, offset: number): number {
+		if (data.byteLength < offset + 2) {
+			throw new TypeError("Insufficient bytes");
 		}
-		if (data.byteLength > 1) {
-			return (data[data.byteLength - 2] << 8) | data[data.byteLength - 1];
-		}
-		return data[data.byteLength - 1];
+		return (data[offset] << 8) | data[offset + 1];
 	}
 
-	public uint32(data: Uint8Array): number {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint32(data: Uint8Array, offset: number): number {
+		if (data.byteLength < offset + 4) {
+			throw new TypeError("Insufficient bytes");
 		}
 		let result = 0;
 		for (let i = 0; i < 4; i++) {
-			let byte = 0;
-			if (data.byteLength - i - 1 >= 0) {
-				byte = data[data.byteLength - i - 1];
-			}
-			result |= byte << (i * 8);
+			result |= data[offset + i] << (24 - i * 8);
 		}
 		return result;
 	}
 
-	public uint64(data: Uint8Array): bigint {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint64(data: Uint8Array, offset: number): bigint {
+		if (data.byteLength < offset + 8) {
+			throw new TypeError("Insufficient bytes");
 		}
 		let result = 0n;
 		for (let i = 0; i < 8; i++) {
-			let byte = 0n;
-			if (data.byteLength - i - 1 >= 0) {
-				byte = BigInt(data[data.byteLength - i - 1]);
-			}
-			result |= byte << BigInt(i * 8);
+			result |= BigInt(data[offset + i]) << BigInt(56 - i * 8);
 		}
 		return result;
 	}
 
 	public putUint8(target: Uint8Array, value: number, offset: number): void {
-		if (target.length < 1 + offset) {
+		if (target.length < offset + 1) {
 			throw new TypeError("Not enough space");
+		}
+		if (value < 0 || value > 255) {
+			throw new TypeError("Invalid uint8 value");
 		}
 		target[offset] = value;
 	}
 
 	public putUint16(target: Uint8Array, value: number, offset: number): void {
-		if (target.length < 2 + offset) {
+		if (target.length < offset + 2) {
 			throw new TypeError("Not enough space");
+		}
+		if (value < 0 || value > 65535) {
+			throw new TypeError("Invalid uint16 value");
 		}
 		target[offset] = value >> 8;
 		target[offset + 1] = value & 0xff;
 	}
 
 	public putUint32(target: Uint8Array, value: number, offset: number): void {
-		if (target.length < 4 + offset) {
+		if (target.length < offset + 4) {
 			throw new TypeError("Not enough space");
+		}
+		if (value < 0 || value > 4294967295) {
+			throw new TypeError("Invalid uint32 value");
 		}
 		for (let i = 0; i < 4; i++) {
 			target[offset + i] = (value >> ((3 - i) * 8)) & 0xff;
@@ -71,8 +69,11 @@ class BigEndian implements ByteOrder {
 	}
 
 	public putUint64(target: Uint8Array, value: bigint, offset: number): void {
-		if (target.length < 8 + offset) {
+		if (target.length < offset + 8) {
 			throw new TypeError("Not enough space");
+		}
+		if (value < 0 || value > 18446744073709551615n) {
+			throw new TypeError("Invalid uint64 value");
 		}
 		for (let i = 0; i < 8; i++) {
 			target[offset + i] = Number((value >> BigInt((7 - i) * 8)) & 0xffn);
@@ -81,53 +82,58 @@ class BigEndian implements ByteOrder {
 }
 
 class LittleEndian implements ByteOrder {
-	public uint8(data: Uint8Array): number {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint8(data: Uint8Array, offset: number): number {
+		if (data.byteLength < offset + 1) {
+			throw new TypeError("Insufficient bytes");
 		}
-		return data[0];
+		return data[offset];
 	}
 
-	public uint16(data: Uint8Array): number {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint16(data: Uint8Array, offset: number): number {
+		if (data.byteLength < offset + 2) {
+			throw new TypeError("Insufficient bytes");
 		}
-		return data[0] | ((data[1] ?? 0) << 8);
+		return data[offset] | (data[offset + 1] << 8);
 	}
 
-	public uint32(data: Uint8Array): number {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint32(data: Uint8Array, offset: number): number {
+		if (data.byteLength < offset + 4) {
+			throw new TypeError("Insufficient bytes");
 		}
 		let result = 0;
 		for (let i = 0; i < 4; i++) {
-			result |= (data[i] ?? 0) << (i * 8);
+			result |= data[offset + i] << (i * 8);
 		}
 		return result;
 	}
 
-	public uint64(data: Uint8Array): bigint {
-		if (data.byteLength === 0) {
-			throw new TypeError("Empty byte array");
+	public uint64(data: Uint8Array, offset: number): bigint {
+		if (data.byteLength < offset + 8) {
+			throw new TypeError("Insufficient bytes");
 		}
 		let result = 0n;
 		for (let i = 0; i < 8; i++) {
-			const byte = BigInt(data[i] ?? 0);
-			result |= byte << BigInt(i * 8);
+			result |= BigInt(data[offset + i]) << BigInt(i * 8);
 		}
 		return result;
 	}
 
 	public putUint8(target: Uint8Array, value: number, offset: number): void {
 		if (target.length < 1 + offset) {
-			throw new TypeError("Not enough space");
+			throw new TypeError("Insufficient space");
+		}
+		if (value < 0 || value > 255) {
+			throw new TypeError("Invalid uint8 value");
 		}
 		target[offset] = value;
 	}
 
 	public putUint16(target: Uint8Array, value: number, offset: number): void {
 		if (target.length < 2 + offset) {
-			throw new TypeError("Not enough space");
+			throw new TypeError("Insufficient space");
+		}
+		if (value < 0 || value > 65535) {
+			throw new TypeError("Invalid uint16 value");
 		}
 		target[offset + 1] = value >> 8;
 		target[offset] = value & 0xff;
@@ -135,7 +141,10 @@ class LittleEndian implements ByteOrder {
 
 	public putUint32(target: Uint8Array, value: number, offset: number): void {
 		if (target.length < 4 + offset) {
-			throw new TypeError("Not enough space");
+			throw new TypeError("Insufficient space");
+		}
+		if (value < 0 || value > 4294967295) {
+			throw new TypeError("Invalid uint32 value");
 		}
 		for (let i = 0; i < 4; i++) {
 			target[offset + i] = (value >> (i * 8)) & 0xff;
@@ -144,7 +153,10 @@ class LittleEndian implements ByteOrder {
 
 	public putUint64(target: Uint8Array, value: bigint, offset: number): void {
 		if (target.length < 8 + offset) {
-			throw new TypeError("Not enough space");
+			throw new TypeError("Insufficient space");
+		}
+		if (value < 0 || value > 18446744073709551615n) {
+			throw new TypeError("Invalid uint64 value");
 		}
 		for (let i = 0; i < 8; i++) {
 			target[offset + i] = Number((value >> BigInt(i * 8)) & 0xffn);
@@ -157,10 +169,10 @@ export const bigEndian = new BigEndian();
 export const littleEndian = new LittleEndian();
 
 export interface ByteOrder {
-	uint8(data: Uint8Array): number;
-	uint16(data: Uint8Array): number;
-	uint32(data: Uint8Array): number;
-	uint64(data: Uint8Array): bigint;
+	uint8(data: Uint8Array, offset: number): number;
+	uint16(data: Uint8Array, offset: number): number;
+	uint32(data: Uint8Array, offset: number): number;
+	uint64(data: Uint8Array, offset: number): bigint;
 	putUint8(target: Uint8Array, value: number, offset: number): void;
 	putUint16(target: Uint8Array, value: number, offset: number): void;
 	putUint32(target: Uint8Array, value: number, offset: number): void;

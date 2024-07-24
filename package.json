@@ -1,7 +1,7 @@
 {
 	"name": "@oslojs/binary",
 	"type": "module",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "Basic primitives for working with binary data",
 	"scripts": {
 		"build": "rm -rf dist/* && tsc --project tsconfig.build.json",
