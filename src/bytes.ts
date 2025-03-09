@@ -25,7 +25,7 @@ export class DynamicBuffer {
 
 	constructor(capacity: number) {
 		this.value = new Uint8Array(capacity);
-		this.capacity = capacity = capacity;
+		this.capacity = capacity;
 	}
 
 	public write(bytes: Uint8Array): void {
@@ -51,7 +51,7 @@ export class DynamicBuffer {
 	public writeByte(byte: number): void {
 		if (this.length + 1 <= this.capacity) {
 			this.value[this.length] = byte;
-			this.length += 1;
+			this.length++;
 			return;
 		}
 		if (this.capacity === 0) {
@@ -63,7 +63,7 @@ export class DynamicBuffer {
 		newValue.set(this.value.subarray(0, this.length));
 		newValue[this.length] = byte;
 		this.value = newValue;
-		this.length += 1;
+		this.length++;
 	}
 
 	public readInto(target: Uint8Array): void {
